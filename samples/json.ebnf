@@ -1,0 +1,32 @@
+# JSON EBNF
+# Based on RFC 8259 (simplified for examples)
+
+json = value ;
+
+value = object
+      | array
+      | string
+      | number
+      | "true"
+      | "false"
+      | "null" ;
+
+object = "{" [ member { "," member } ] "}" ;
+member = string ":" value ;
+
+array = "[" [ value { "," value } ] "]" ;
+
+string = '"' { character } '"' ;
+character = unescaped | escape ;
+unescaped = ? any-unicode-except-quote-or-backslash ? ;
+escape = "\\" ( '"' | "\\" | "/" | "b" | "f" | "n" | "r" | "t" | "u" hex hex hex hex ) ;
+
+number = [ "-" ] int [ frac ] [ exp ] ;
+int = "0" | digit19 { digit } ;
+frac = "." digit { digit } ;
+exp = ( "e" | "E" ) [ "+" | "-" ] digit { digit } ;
+
+digit = "0" | digit19 ;
+digit19 = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+hex = digit | "a" | "b" | "c" | "d" | "e" | "f" | "A" | "B" | "C" | "D" | "E" | "F" ;

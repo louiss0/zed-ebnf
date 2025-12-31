@@ -1,0 +1,11 @@
+id = "ebnf"
+name = "EBNF"
+version = "0.0.1"
+schema_version = 1
+authors = ["Shelton Louis <louisshelton0@gmail.com>"]
+description = "EBNF language support."
+repository = "https://github.com/louiss0/zed-ebnf"
+
+[grammars.ebnf]
+repository = "https://github.com/louiss0/tree-sitter-ebnf"
+rev = "8558f670885ff25353cc6e9de450af4823f49e42"

@@ -1,0 +1,64 @@
+# TOML EBNF
+# Based on TOML v1.0.0 (simplified for examples)
+
+toml = { statement } ;
+
+statement = ws
+          | comment
+          | keyval
+          | table
+          | array_table ;
+
+keyval = key ws "=" ws value line_end ;
+
+key = key_part { "." key_part } ;
+key_part = bare_key | quoted_key ;
+
+bare_key = bare_char { bare_char } ;
+bare_char = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M"
+          | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+          | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m"
+          | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+          | "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "-" | "_" ;
+
+quoted_key = basic_string ;
+
+value = string
+      | integer
+      | float
+      | boolean
+      | date_time
+      | array
+      | inline_table ;
+
+string = basic_string | literal_string ;
+basic_string = '"' { basic_char } '"' ;
+literal_string = "'" { literal_char } "'" ;
+
+integer = [ "-" | "+" ] digit { digit } ;
+float = integer "." digit { digit } [ exp ] ;
+exp = ( "e" | "E" ) [ "+" | "-" ] digit { digit } ;
+
+boolean = "true" | "false" ;
+
+date_time = date [ "T" time ] ;
+date = digit digit digit digit "-" digit digit "-" digit digit ;
+time = digit digit ":" digit digit ":" digit digit ;
+
+array = "[" ws [ value { ws "," ws value } ] ws "]" ;
+inline_table = "{" ws [ keyval_inline { ws "," ws keyval_inline } ] ws "}" ;
+keyval_inline = key ws "=" ws value ;
+
+comment = "#" { comment_char } line_end ;
+comment_char = ? any-unicode-except-newline ? ;
+
+ws = { " " | "\t" | "\r" | "\n" } ;
+line_end = "\n" | "\r\n" ;
+
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+basic_char = ? any-unicode-except-quote-or-backslash-or-control ?
+           | escape ;
+escape = "\\" ( "\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "u" digit digit digit digit ) ;
+
+literal_char = ? any-unicode-except-apostrophe-or-control ? ;

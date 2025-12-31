@@ -1,0 +1,35 @@
+# YAML EBNF
+# Simplified core constructs for examples
+
+yaml = document { document } ;
+
+document = "---" line_end [ node ] [ "..." line_end ] ;
+
+node = scalar
+     | sequence
+     | mapping ;
+
+sequence = "-" ws node { line_end "-" ws node } ;
+
+mapping = key ":" ws node { line_end key ":" ws node } ;
+key = scalar ;
+
+scalar = plain_scalar | quoted_scalar ;
+
+plain_scalar = plain_char { plain_char } ;
+plain_char = ? any-unicode-except-\r-\n-\t-\0-\x0B-\x0C ? ;
+
+quoted_scalar = single_quoted | double_quoted ;
+
+single_quoted = "'" { single_char } "'" ;
+single_char = "''" | ? any-unicode-except-apostrophe ? ;
+
+double_quoted = '"' { double_char } '"' ;
+double_char = escape | ? any-unicode-except-quote-or-backslash ? ;
+escape = "\\" ( '"' | "\\" | "/" | "b" | "f" | "n" | "r" | "t" | "u" hex hex hex hex ) ;
+
+ws = { " " | "\t" } ;
+line_end = "\n" | "\r\n" ;
+
+hex = digit | "a" | "b" | "c" | "d" | "e" | "f" | "A" | "B" | "C" | "D" | "E" | "F" ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;

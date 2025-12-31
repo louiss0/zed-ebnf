@@ -1,0 +1,13 @@
+(comment) @comment
+(meta_identifier) @variable
+(terminal_string) @string
+(integer) @number
+(special_sequence) @string.special
+(defining_symbol) @operator
+(definition_separator) @operator
+(repetition_symbol) @operator
+(except_symbol) @operator
+(concatenate_symbol) @operator
+(range_operator) @operator
+(markdown_heading1) @title
+(markdown_heading) @title
