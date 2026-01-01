@@ -1,13 +1,26 @@
 (comment) @comment
-(meta_identifier) @variable
+(meta_identifier) @constant
 (terminal_string) @string
 (integer) @number
 (special_sequence) @string.special
-(defining_symbol) @operator
-(definition_separator) @operator
-(repetition_symbol) @operator
-(except_symbol) @operator
-(concatenate_symbol) @operator
-(range_operator) @operator
+[
+  "["
+  "]"
+] @punctuation.bracket
+[
+  "{"
+  "}"
+  "("
+  ")"
+] @punctuation.delimiter
+[
+  (defining_symbol)
+  (definition_separator)
+  (repetition_symbol)
+  (except_symbol)
+  (concatenate_symbol)
+  (range_operator)
+  (terminator_symbol)
+] @operator
 (markdown_heading1) @title
 (markdown_heading) @title

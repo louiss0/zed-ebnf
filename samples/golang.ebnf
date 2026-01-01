@@ -1,0 +1,59 @@
+# Go EBNF
+# Simplified grammar for examples
+
+go = package_clause { import_decl } { top_level_decl } ;
+
+package_clause = "package" identifier ";" ;
+
+import_decl = "import" ( import_spec | "(" { import_spec } ")" ) ;
+import_spec = [ "." | "_" | identifier ] string_lit ";" ;
+
+top_level_decl = const_decl | type_decl | var_decl | func_decl ;
+
+const_decl = "const" ( const_spec | "(" { const_spec } ")" ) ;
+const_spec = identifier_list [ "=" expr_list ] ";" ;
+
+type_decl = "type" ( type_spec | "(" { type_spec } ")" ) ;
+type_spec = identifier type ";" ;
+
+var_decl = "var" ( var_spec | "(" { var_spec } ")" ) ;
+var_spec = identifier_list [ type ] [ "=" expr_list ] ";" ;
+
+func_decl = "func" identifier signature [ block ] ;
+signature = "(" [ parameter_list ] ")" [ result ] ;
+parameter_list = parameter_decl { "," parameter_decl } [ "," ] ;
+parameter_decl = identifier_list [ type ] | type ;
+result = type | "(" [ parameter_list ] ")" ;
+
+block = "{" { stmt } "}" ;
+
+stmt = simple_stmt ";" | block | if_stmt | for_stmt | return_stmt ;
+
+simple_stmt = expr_stmt | assign_stmt ;
+expr_stmt = expr ;
+assign_stmt = expr_list assign_op expr_list ;
+assign_op = "=" | "+=" | "-=" | "*=" | "/=" ;
+
+if_stmt = "if" [ simple_stmt ";" ] expr block [ "else" ( if_stmt | block ) ] ;
+for_stmt = "for" [ for_clause | range_clause | expr ] block ;
+for_clause = [ init_stmt ] ";" [ expr ] ";" [ post_stmt ] ;
+range_clause = [ expr_list "=" ] "range" expr ;
+init_stmt = simple_stmt ;
+post_stmt = simple_stmt ;
+return_stmt = "return" [ expr_list ] ;
+
+expr_list = expr { "," expr } ;
+expr = operand { binary_op operand } ;
+operand = identifier | number | string_lit | "(" expr ")" ;
+binary_op = "+" | "-" | "*" | "/" | "==" | "!=" | "<" | ">" | "<=" | ">=" ;
+
+identifier_list = identifier { "," identifier } ;
+identifier = letter { letter | digit | "_" } ;
+number = digit { digit } ;
+string_lit = '"' { character } '"' ;
+type = identifier | pointer_type ;
+pointer_type = "*" type ;
+
+letter = ? ASCII letter ? ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+character = ? any character except '"' and newline ? ;

@@ -1,0 +1,52 @@
+# Python EBNF
+
+# Simplified grammar for examples
+
+python = { stmt } ;
+
+stmt = simple_stmt | compound_stmt ;
+simple_stmt = small_stmt { ";" small_stmt } [ ";" ] NEWLINE ;
+small_stmt = assign_stmt | expr_stmt | "pass" | return_stmt ;
+return_stmt = "return" [ expr_list ] ;
+assign_stmt = identifier "=" expr ;
+expr_stmt = expr ;
+
+compound_stmt = if_stmt | while_stmt | func_def ;
+
+if_stmt = "if" expr ":" suite
+        [ "elif" expr ":" suite ]
+        [ "else" ":" suite ] ;
+
+while_stmt = "while" expr ":" suite [ "else" ":" suite ] ;
+
+func_def = "def" identifier "(" [ parameters ] ")" ":" suite ;
+parameters = identifier { "," identifier } [ "," ] ;
+
+suite = NEWLINE INDENT { stmt } DEDENT | simple_stmt ;
+
+expr_list = expr { "," expr } [ "," ] ;
+
+expr = or_test ;
+or_test = and_test { "or" and_test } ;
+and_test = not_test { "and" not_test } ;
+not_test = [ "not" ] comparison ;
+comparison = arith_expr [ comp_op arith_expr ] ;
+comp_op = "<" | ">" | "==" | ">=" | "<=" | "!=" ;
+
+arith_expr = term { ( "+" | "-" ) term } ;
+term = factor { ( "*" | "/" ) factor } ;
+factor = [ "+" | "-" ] atom ;
+
+atom = identifier | number | string | "(" expr ")" ;
+
+identifier = letter { letter | digit | "_" } ;
+number = digit { digit } ;
+string = '"' { character } '"' ;
+
+letter = ? ASCII letter ? ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+character = ? any character except '"' and newline ? ;
+
+NEWLINE = ? line break ? ;
+INDENT = ? increased indentation ? ;
+DEDENT = ? decreased indentation ? ;
