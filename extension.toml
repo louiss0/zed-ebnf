@@ -1,6 +1,6 @@
 id = "ebnf"
 name = "EBNF"
-version = "0.0.1"
+version = "1.0.0"
 schema_version = 1
 authors = ["Shelton Louis <louisshelton0@gmail.com>"]
 description = "EBNF language support."
